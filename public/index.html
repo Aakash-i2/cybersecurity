@@ -1,75 +1,121 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Cybersecurity Lab Notes</title>
-  <style>
-    body {
-      font-family: Arial;
-      background: #0f172a;
-      color: #e2e8f0;
-      padding: 20px;
-    }
-    h1 { color: #38bdf8; }
-    h2 { color: #22c55e; margin-top: 30px; }
-    pre {
-      background: #1e293b;
-      padding: 15px;
-      border-radius: 8px;
-      overflow-x: auto;
-    }
-  </style>
+    <title>Cybersecurity Lab Notes</title>
 </head>
 <body>
 
-<h1>Cybersecurity Lab Notes 🚀</h1>
+<h3>Analysing Android App Permissions and Mobile Traffic</h3>
+<p>
+in phone goto internet settings-> adv options-> select 8080 and 10.0.0.2 and example.com<br>
+goto burpsuite proxy settings<br>
+1.add binding all interfaces<br>
+2.select interface running 8080<br>
+3.goback intercept on<br>
+4.goto browser http://burp donwload<br>
+5.export certficate (key in der format)<br><br>
 
-<h2>📱 Android App Traffic Analysis (Burp Suite)</h2>
-<pre>
-Set proxy: 10.0.0.2:8080
-Burp → Proxy → Bind all interfaces
-Enable Intercept
-Visit http://burp → download certificate
-adb push cacert.der /sdcard/Download/
-</pre>
+cd C:\Users\aakas\AppData\Local\Android\Sdk\platform-tools<br>
+adb push C:\Users\aakas\Downloads\cacert.der /sdcard/Download/
+</p>
 
-<h2>🌐 IoT Security Testing (Juice Shop)</h2>
-<pre>
-docker run -d -p 8090:3000 --name juiceshop bkimminich/juice-shop
-nmap -sV target_ip
-Login: admin@juice-sh.op
-SQL Injection: ' OR 1=1 --
-</pre>
+<h3>Testing IoT Device Security</h3>
+<p>
+cmd:<br>
+docker run -d -p 8090:3000 --name juiceshop bkimminich/juice-shop<br>
+ipconfig<br>
+kali:<br>
+terminal: nmap localhost<br>
+nmap -sV ip<br>
+browser : admin@juice-sh.op<br>
+' OR 1=1 --
+</p>
 
-<h2>💾 Disk Forensics (dc3dd & Autopsy)</h2>
-<pre>
-dd if=/dev/zero of=disk_image.dd bs=1M count=100
-mkfs.ext4 disk_image.dd
-md5sum disk_image.dd
-sha256sum disk_image.dd
-</pre>
+<h3>Analyzing Disk Images Using dc3dd and Autopsy</h3>
+<p>
+echo "Cybersecurity Lab Evidence" > evidence.txt<br>
+lsblk<br>
+sudo apt update<br>
+sudo apt install dc3dd<br>
+dd if=/dev/zero of=/home/kali/disk_image.dd bs=1M count=100<br>
+mkfs.ext4 /home/kali/disk_image.dd<br>
+echo "Acquisition started" > /home/kali/acquisition.log<br>
+md5sum /home/kali/disk_image.dd >> /home/kali/acquisition.log<br>
+sha256sum /home/kali/disk_image.dd >> /home/kali/acquisition.log<br>
+cat /home/kali/acquisition.log<br>
+autospy
+</p>
 
-<h2>📜 Log Analysis</h2>
-<pre>
-cd /var/log
-last
-journalctl | grep "Failed password"
-sudo lastb
-</pre>
+<h3>Experiment 18: Log File Analysis (Simple Steps)</h3>
+<p>
+Open terminal<br>
+Go to log directory<br>
+cd /var/log<br>
+ls<br>
+Check successful login history<br>
+last<br>
+View system logs<br>
+journalctl | less<br>
+Find failed login attempts<br>
+journalctl | grep "Failed"<br>
+Check SSH login activity<br>
+journalctl | grep ssh<br>
+Find system errors<br>
+journalctl | grep -i error<br><br>
 
-<h2>📡 Wireshark Network Forensics</h2>
-<pre>
-tcp
-ip.addr == TARGET_IP
-tcp.flags.syn == 1 && tcp.flags.ack == 0
-nmap -sS target_ip
-</pre>
+Simulate Attack (Important)<br>
+Install SSH<br>
+sudo apt install openssh-server -y<br>
+Start SSH service<br>
+sudo service ssh start<br>
+Generate failed login attempts<br>
+ssh fakeuser@localhost<br><br>
 
-<h2>🔍 Privacy Audit (WhatsApp & Facebook)</h2>
-<pre>
-nativefier https://web.whatsapp.com
-wireshark → filter tls,dns
-burpsuite → intercept traffic
-</pre>
+(enter wrong password multiple times)<br><br>
+
+Analyze Attack<br>
+Check failed password logs<br>
+journalctl | grep "Failed password"<br>
+Extract IP address<br>
+journalctl | grep "Failed password" | awk '{print $11}'<br>
+Count number of attempts<br>
+journalctl | grep "Failed password" | awk '{print $11}' | sort | uniq -c | sort -nr<br>
+Alternative command<br>
+sudo lastb<br><br>
+
+Result<br>
+Identify repeated IP (example: 127.0.0.1)<br>
+Multiple attempts = brute force attack
+</p>
+
+<h3>NETWORK FORENSICS USING WIRESHARK</h3>
+<p>
+1.open wireshark eth)<br>
+2.tcp<br>
+ip.addr == 192.168.0.161<br>
+tcp.stream eq2 -> follow<br>
+3.nmap -sS windowip<br>
+tcp.flags.syn == 1 && tcp.flags.ack == 0<br>
+4.statistics
+</p>
+
+<h3>Privacy Audit of Popular Apps (Desktop WhatsApp) and Websites (Facebook) & Data Breach Case Study Analysis</h3>
+<p>
+sudo apt update<br>
+sudo apt install nodejs npm -y<br>
+sudo npm install -g nativefier<br>
+nativefier https://web.whatsapp.com<br>
+cd WhatsAppWeb-linux-x64<br>
+./WhatsAppWeb<br>
+login and send<br>
+https://reports.exodus-privacy.eu.org<br>
+wireshark -tls dns<br><br>
+
+facebook login<br>
+burpsuite -127.0.0.1 8080<br>
+intercept on<br>
+analyze network traffic
+</p>
 
 </body>
 </html>
