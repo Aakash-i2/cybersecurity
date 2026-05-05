@@ -1,9 +1,0 @@
-goto burpsuite  proxy settings
-1.add binding all interfaces
-2.select interface running 8080
-3.goback intercept on
-4.goto browser http://burp donwload
-5.export certficate (key in der format)
-in phone goto internet settings-> adv options-> select 8080 and 10.0.0.2 and example.com
-cd C:\Users\aakas\AppData\Local\Android\Sdk\platform-tools
-adb push C:\Users\aakas\Downloads\cacert.der /sdcard/Download/
