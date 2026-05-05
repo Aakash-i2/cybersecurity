@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cybersecurity Lab Notes</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 20px;
+    }
+    h1 { color: #38bdf8; }
+    h2 { color: #22c55e; margin-top: 30px; }
+    pre {
+      background: #1e293b;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Cybersecurity Lab Notes 🚀</h1>
+
+<h2>📱 Android App Traffic Analysis (Burp Suite)</h2>
+<pre>
+Set proxy: 10.0.0.2:8080
+Burp → Proxy → Bind all interfaces
+Enable Intercept
+Visit http://burp → download certificate
+adb push cacert.der /sdcard/Download/
+</pre>
+
+<h2>🌐 IoT Security Testing (Juice Shop)</h2>
+<pre>
+docker run -d -p 8090:3000 --name juiceshop bkimminich/juice-shop
+nmap -sV target_ip
+Login: admin@juice-sh.op
+SQL Injection: ' OR 1=1 --
+</pre>
+
+<h2>💾 Disk Forensics (dc3dd & Autopsy)</h2>
+<pre>
+dd if=/dev/zero of=disk_image.dd bs=1M count=100
+mkfs.ext4 disk_image.dd
+md5sum disk_image.dd
+sha256sum disk_image.dd
+</pre>
+
+<h2>📜 Log Analysis</h2>
+<pre>
+cd /var/log
+last
+journalctl | grep "Failed password"
+sudo lastb
+</pre>
+
+<h2>📡 Wireshark Network Forensics</h2>
+<pre>
+tcp
+ip.addr == TARGET_IP
+tcp.flags.syn == 1 && tcp.flags.ack == 0
+nmap -sS target_ip
+</pre>
+
+<h2>🔍 Privacy Audit (WhatsApp & Facebook)</h2>
+<pre>
+nativefier https://web.whatsapp.com
+wireshark → filter tls,dns
+burpsuite → intercept traffic
+</pre>
+
+</body>
+</html>
