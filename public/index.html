@@ -4,7 +4,48 @@
     <title>Cybersecurity Lab Notes</title>
 </head>
 <body>
+    <h3>python3 -m http.server 8080
+sudo tcpdump -i any -w capture.pcap port 8080</h3>
+    <h3>xss</h3>
+    <p>"C:\Program Files\Google\Chrome\Application\chrome.exe" --proxy-server="http=127.0.0.1:8081;https=127.0.0.1:8081" --proxy-bypass-list="<-loopback>"</p>
+<h3>password</h3>
+<p>
+import re<br><br>
 
+def check_password_strength(password):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if len(password) &lt; 8:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return "Weak: Password must be at least 8 characters long."<br><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;if not any(char.isdigit() for char in password):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return "Weak: Password must include at least one number."<br><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;if not any(char.isupper() for char in password):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return "Weak: Password must include at least one uppercase letter."<br><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;if not any(char.islower() for char in password):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return "Weak: Password must include at least one lowercase letter."<br><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;if not re.search(r'[!@#$%^&*(),.?":{}|&lt;&gt;]', password):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return "Medium: Add special characters to make your password stronger."<br><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;return "Strong: Your password is secure!"<br><br>
+
+def password_checker():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("Welcome to the Password Strength Checker!")<br><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;while True:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password = input("Enter your password (or type 'exit' to quit): ")<br><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if password.lower() == "exit":<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Thank you for using the Password Strength Checker! Goodbye!")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = check_password_strength(password)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(result)<br><br>
+
+if __name__ == "__main__":<br>
+&nbsp;&nbsp;&nbsp;&nbsp;password_checker()<br>
+</p>
 <h3>Analysing Android App Permissions and Mobile Traffic</h3>
 <p>
 in phone goto internet settings-> adv options-> select 8080 and 10.0.0.2 and example.com<br>
