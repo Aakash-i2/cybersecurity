@@ -2,7 +2,62 @@
 <html>
 <head>
     <title>Cybersecurity Lab Notes</title>
+    <style>
+    body {
+        background-color: #121212;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+        padding: 20px;
+    }
+
+    h3 {
+        color: #00ffcc;
+        border-bottom: 1px solid #333;
+        padding-bottom: 5px;
+    }
+
+    p {
+        background-color: #1e1e1e;
+        padding: 15px;
+        border-radius: 10px;
+        overflow-x: auto;
+        line-height: 1.6;
+    }
+
+    code {
+        color: #ffcc66;
+    }
+
+    button {
+        background: #00ffcc;
+        color: black;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+
+    .dark-mode {
+        background-color: white;
+        color: black;
+    }
+
+    .dark-mode p {
+        background-color: #f0f0f0;
+        color: black;
+    }
+
+    .dark-mode h3 {
+        color: #006666;
+    }
+</style>
 </head>
+    <script>
+    function toggleMode() {
+        document.body.classList.toggle("dark-mode");
+    }
+</script>
 <body>
     <h3>python3 -m http.server 8080
 sudo tcpdump -i any -w capture.pcap port 8080</h3>
@@ -159,4 +214,5 @@ analyze network traffic
 </p>
 
 </body>
+    <button onclick="toggleMode()">Toggle Dark/Light Mode</button>
 </html>
